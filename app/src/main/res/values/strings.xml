@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PictureOut</string>
+    <string name="create_your_own_plan">Create your own plan</string>
+    <string name="mainPageBackground">Destination demo pic</string>
 </resources>
