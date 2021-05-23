@@ -2,8 +2,11 @@ package com.designyourjourney.pictureout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,14 +23,30 @@ import java.util.ArrayList;
 
 public class MakePlan extends AppCompatActivity {
     private ArrayList<String> cities;
+    private AutoCompleteTextView citydropdown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_plan);
         cities=new ArrayList<String>();
+        initialise_data();
+    }
 
-        // Get all cities name from some API
+    private void initialise_data() {
+        //Set up a progress dialog until the response arrives
+        ProgressDialog progressDialog=new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setTitle("Create your own plan");
+        progressDialog.show();
+
+        //  for stop dialog dismiss on click hardware back button
+        progressDialog.setCancelable(false);
+        // for stop dialog dismiss on click screen any where
+        progressDialog.setCanceledOnTouchOutside(false);
+
+        // Creating a request queue and adding json request to the given URL
         String url="https://countriesnow.space/api/v0.1/countries";
         RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
 
@@ -53,19 +72,30 @@ public class MakePlan extends AppCompatActivity {
                             cities.add(city+","+country);
                         }
                     }
+                    progressDialog.dismiss();
+                    setFields();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.d("A",String.valueOf(cities));
             }
         },
                 new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("FetchCity","Some error occured");
+                Log.d("FetchCity","Error: "+String.valueOf(error));
             }
         });
 
         requestQueue.add(jsonObjectRequest);
+    }
+
+    private void setFields() {
+        citydropdown=findViewById(R.id.cityListDropdown);
+        Log.d("Cities Retrieved",String.valueOf(cities));
+
+        // Set autocomplete values to text view using adapter
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_dropdown_item_1line,cities);
+        citydropdown.setAdapter(arrayAdapter);
     }
 }
