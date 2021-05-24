@@ -10,7 +10,7 @@
         android:id="@+id/cityListDropdown"
         android:layout_width="286dp"
         android:layout_height="50dp"
-        android:hint="Select your city"
+        android:hint="@string/select_your_city"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -18,17 +18,36 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.155" />
 
-    <EditText
-        android:id="@+id/editTextDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
-        android:ems="10"
-        android:inputType="date"
+    <TextView
+        android:id="@+id/startDate"
+        android:layout_width="284dp"
+        android:layout_height="47dp"
+        android:background="?attr/editTextBackground"
+        android:gravity="center_vertical"
+        android:hint="@string/start_date"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.308"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cityListDropdown"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.079"
+        android:autofillHints="" />
+
+    <TextView
+        android:id="@+id/endDate"
+        android:layout_width="279dp"
+        android:layout_height="43dp"
+        android:autofillHints=""
+        android:background="?attr/editTextBackground"
+        android:ems="10"
+        android:hint="@string/end_date"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.469"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startDate"
+        app:layout_constraintVertical_bias="0.072" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

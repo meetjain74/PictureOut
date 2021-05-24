@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">PictureOut</string>
+
     <string name="create_your_own_plan">Create your own plan</string>
     <string name="mainPageBackground">Destination demo pic</string>
+    <string name="select_your_city">Select your city</string>
+    <string name="start_date">Start date</string>
+    <string name="end_date">End date</string>
 </resources>
