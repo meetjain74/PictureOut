@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="actionBar">#3b99c1</color>
     <color name="statusBar">#53a8c9</color>
+    <color name="datePickerDialog_topBar">#f4a236</color>
 </resources>

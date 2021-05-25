@@ -13,4 +13,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/statusBar</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/datePickerDialog_topBar</item>
+    </style>
 </resources>

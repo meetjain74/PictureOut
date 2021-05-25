@@ -3,7 +3,11 @@
 
     <string name="create_your_own_plan">Create your own plan</string>
     <string name="mainPageBackground">Destination demo pic</string>
-    <string name="select_your_city">Select your city</string>
+    <string name="enter_city">Enter City</string>
     <string name="start_date">Start date</string>
     <string name="end_date">End date</string>
+    <string name="plan_name">Plan name</string>
+    <string name="add_destination">Add destination</string>
+    <string name="remove_destination" />
+    <string name="create_plan">Create Plan</string>
 </resources>

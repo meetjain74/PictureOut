@@ -9,8 +9,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,16 +34,23 @@ import java.util.GregorianCalendar;
 
 public class MakePlan extends AppCompatActivity {
     private ArrayList<String> cities;
+    private EditText plan_name;
     private AutoCompleteTextView citydropdown;
     private TextView start_date;
     private DatePicker datePicker_start;
     private TextView end_date;
     private  DatePicker datePicker_end;
+    private TextView add_destination;
+    private LinearLayout layout;
+    private Button submit;
+    private ArrayList<String> citiesSelected=new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_plan);
+        plan_name=findViewById(R.id.planName);
+
         cities = new ArrayList<>();
         initialise_data();
 
@@ -55,6 +67,31 @@ public class MakePlan extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setEndDate();
+            }
+        });
+
+        add_destination=findViewById(R.id.addDestination);
+        add_destination.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkIfPreviousFieldsFilled()) {
+                    addDestination();
+                }
+                else {
+                    Toast.makeText(MakePlan.this, "Already available", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        layout=findViewById(R.id.AddLayout);
+
+        submit=findViewById(R.id.create_plan);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MakePlan.this, "Button clicked", Toast.LENGTH_SHORT).show();
+                getCitiesSelected();
+                Log.d("Cities selected : ", String.valueOf(citiesSelected));
             }
         });
     }
@@ -95,7 +132,7 @@ public class MakePlan extends AppCompatActivity {
                                 for (int j = 0; j < citiesdata.length(); j++) {
                                     city = (String) citiesdata.get(j);
                                     //Add it to array list
-                                    cities.add(city + "," + country);
+                                    cities.add(city + ", " + country);
                                 }
                             }
                             progressDialog.dismiss();
@@ -132,7 +169,7 @@ public class MakePlan extends AppCompatActivity {
         int year=calendar.get(Calendar.YEAR);
 
         DatePickerDialog start=new DatePickerDialog(
-                this,
+                this,R.style.DialogTheme,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -164,7 +201,7 @@ public class MakePlan extends AppCompatActivity {
         int year=calendar.get(Calendar.YEAR);
 
         DatePickerDialog end=new DatePickerDialog(
-                this,
+                this,R.style.DialogTheme,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -199,6 +236,67 @@ public class MakePlan extends AppCompatActivity {
             case 6: return "Sat"; //Saturday
             case 7: return "Sun"; //Sunday
             default: return "Error"; //Invalid day
+        }
+    }
+
+    private void addDestination() {
+        View newDestination=getLayoutInflater().inflate(R.layout.add_destination, null,false);
+        AutoCompleteTextView textView=(AutoCompleteTextView) newDestination.findViewById(R.id.cityLinearLayout);
+        ImageView close=(ImageView) newDestination.findViewById(R.id.close);
+
+        // Set autocomplete values to text view using adapter
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>
+                (this, android.R.layout.simple_dropdown_item_1line, cities);
+        textView.setAdapter(arrayAdapter);
+
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeDestination(newDestination);
+            }
+        });
+
+        layout.addView(newDestination);
+    }
+
+    private void removeDestination(View v) {
+        layout.removeView(v);
+    }
+
+    private boolean checkIfPreviousFieldsFilled() {
+        String text;
+        text=citydropdown.getText().toString();
+        if (text == null || text.equals("")) {
+            return false;
+        }
+
+        for (int i=0;i<layout.getChildCount();i++) {
+            View destination = layout.getChildAt(i);
+            AutoCompleteTextView textView = (AutoCompleteTextView) destination.findViewById(R.id.cityLinearLayout);
+            text = textView.getText().toString();
+            if (text == null || text.equals("")) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void getCitiesSelected() {
+        citiesSelected.clear();
+        String text;
+        text=citydropdown.getText().toString();
+        if (text!=null || !text.equals("")) {
+            citiesSelected.add(text);
+        }
+
+        for (int i=0;i<layout.getChildCount();i++) {
+            View destination = layout.getChildAt(i);
+            AutoCompleteTextView textView = (AutoCompleteTextView) destination.findViewById(R.id.cityLinearLayout);
+            text = textView.getText().toString();
+            if (text != null || !text.equals("")) {
+                citiesSelected.add(text);
+            }
         }
     }
 }

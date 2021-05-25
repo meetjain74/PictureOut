@@ -6,48 +6,88 @@
     android:layout_height="match_parent"
     tools:context=".MakePlan">
 
-    <AutoCompleteTextView
-        android:id="@+id/cityListDropdown"
-        android:layout_width="286dp"
-        android:layout_height="50dp"
-        android:hint="@string/select_your_city"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.155" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="16dp">
 
-    <TextView
-        android:id="@+id/startDate"
-        android:layout_width="284dp"
-        android:layout_height="47dp"
-        android:background="?attr/editTextBackground"
-        android:gravity="center_vertical"
-        android:hint="@string/start_date"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cityListDropdown"
-        app:layout_constraintVertical_bias="0.079"
-        android:autofillHints="" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_gravity="center_horizontal">
 
-    <TextView
-        android:id="@+id/endDate"
-        android:layout_width="279dp"
-        android:layout_height="43dp"
-        android:autofillHints=""
-        android:background="?attr/editTextBackground"
-        android:ems="10"
-        android:hint="@string/end_date"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.469"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startDate"
-        app:layout_constraintVertical_bias="0.072" />
+            <EditText
+                android:id="@+id/planName"
+                android:layout_width="286dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="100dp"
+                android:autofillHints=""
+                android:hint="@string/plan_name"
+                android:inputType="text"
+                android:textColor="#000000" />
+
+            <AutoCompleteTextView
+                android:id="@+id/cityListDropdown"
+                android:layout_width="286dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="25dp"
+                android:hint="@string/enter_city" />
+
+            <LinearLayout
+                android:id="@+id/AddLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7.5dp"
+                android:layout_gravity="start"
+                android:orientation="vertical" />
+
+            <TextView
+                android:id="@+id/addDestination"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/add_destination"
+                android:textColor="#f29111" />
+
+            <TextView
+                android:id="@+id/startDate"
+                android:layout_width="286dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="25dp"
+                android:autofillHints=""
+                android:background="?attr/editTextBackground"
+                android:gravity="center_vertical"
+                android:hint="@string/start_date"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/endDate"
+                android:layout_width="286dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="25dp"
+                android:autofillHints=""
+                android:background="?attr/editTextBackground"
+                android:ems="10"
+                android:hint="@string/end_date"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/create_plan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/create_plan"
+                android:background="@drawable/create_your_own_plan"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="30dp"/>
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
