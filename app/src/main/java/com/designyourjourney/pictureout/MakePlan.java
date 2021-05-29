@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -21,19 +23,21 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class MakePlan extends AppCompatActivity {
-    private ArrayList<String> cities;
+    private ArrayList<City> cities;
     private EditText plan_name;
     private AutoCompleteTextView citydropdown;
     private TextView start_date;
@@ -43,7 +47,9 @@ public class MakePlan extends AppCompatActivity {
     private TextView add_destination;
     private LinearLayout layout;
     private Button submit;
-    private ArrayList<String> citiesSelected=new ArrayList<String>();
+    private ArrayList<City> citiesSelected=new ArrayList<>();
+    private Calendar dateStart=Calendar.getInstance();
+    private Calendar dateEnd=Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +57,12 @@ public class MakePlan extends AppCompatActivity {
         setContentView(R.layout.activity_make_plan);
         plan_name=findViewById(R.id.planName);
 
+        Log.d("DATE: ",dateStart+" "+dateEnd);
+
         cities = new ArrayList<>();
         initialise_data();
 
+        // Get all attributes and add corresponding properties to it
         start_date = findViewById(R.id.startDate);
         start_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +75,12 @@ public class MakePlan extends AppCompatActivity {
         end_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setEndDate();
+                String text=start_date.getText().toString();
+                if (text==null || text.length()==0) {
+                    Toast.makeText(MakePlan.this, "Enter start date first", Toast.LENGTH_SHORT).show();
+                } else {
+                    setEndDate();
+                }
             }
         });
 
@@ -78,7 +92,7 @@ public class MakePlan extends AppCompatActivity {
                     addDestination();
                 }
                 else {
-                    Toast.makeText(MakePlan.this, "Already available", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Already available", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -89,9 +103,16 @@ public class MakePlan extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MakePlan.this, "Button clicked", Toast.LENGTH_SHORT).show();
-                getCitiesSelected();
-                Log.d("Cities selected : ", String.valueOf(citiesSelected));
+                if (!getCitiesSelected()) {
+                    Toast.makeText(MakePlan.this, "Enter a valid city", Toast.LENGTH_SHORT).show();
+                }
+                else if (checkAllDetailsEntered()) {
+                    Intent intent=new Intent(getApplicationContext(),IdealisePlan.class);
+                    passData(intent);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(MakePlan.this, "Enter all fields", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -110,36 +131,41 @@ public class MakePlan extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
 
         // Creating a request queue and adding json request to the given URL
-        String url = "https://countriesnow.space/api/v0.1/countries";
+        String url = "https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/countries%2Bcities.json";
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+        JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET,
                 url, null,
-                new Response.Listener<JSONObject>() {
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        JSONArray data = null;
-                        JSONObject countrydata;
-                        JSONArray citiesdata;
-                        String country, city;
-                        try {
-                            //Fetch the corresponding data from API
-                            data = response.getJSONArray("data");
-                            for (int i = 0; i < data.length(); i++) {
-                                countrydata = data.getJSONObject(i);
-                                country = countrydata.getString("country");
-                                citiesdata = countrydata.getJSONArray("cities");
-                                for (int j = 0; j < citiesdata.length(); j++) {
-                                    city = (String) citiesdata.get(j);
-                                    //Add it to array list
-                                    cities.add(city + ", " + country);
+                    public void onResponse(JSONArray response) {
+                        int count = 0;
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject data = null;
+                            String country;
+                            JSONArray list;
+                            JSONObject cityData;
+                            try {
+                                data = response.getJSONObject(i);
+                                country = data.getString("name");
+                                list = data.getJSONArray("cities");
+                                for (int j = 0; j < list.length(); j++) {
+                                    City temp = new City();
+                                    cityData = list.getJSONObject(j);
+                                    temp.setId(++count);
+                                    temp.setCountry(country);
+                                    temp.setName(cityData.getString("name"));
+                                    temp.setLatitude(Double.parseDouble(cityData.getString("latitude")));
+                                    temp.setLongitude(Double.parseDouble(cityData.getString("longitude")));
+                                    cities.add(temp);
+                                    //Log.d("Temp: ", String.valueOf(cities));
                                 }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            progressDialog.dismiss();
-                            setFields();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
+                        progressDialog.dismiss();
+                        setFields();
                     }
                 },
                 new Response.ErrorListener() {
@@ -149,7 +175,7 @@ public class MakePlan extends AppCompatActivity {
                     }
                 });
 
-        requestQueue.add(jsonObjectRequest);
+        requestQueue.add(jsonArrayRequest);
     }
 
     private void setFields() {
@@ -157,22 +183,35 @@ public class MakePlan extends AppCompatActivity {
         Log.d("Cities Retrieved", String.valueOf(cities));
 
         // Set autocomplete values to text view using adapter
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>
-                (this, android.R.layout.simple_dropdown_item_1line, cities);
-        citydropdown.setAdapter(arrayAdapter);
+        setCityAdapter(citydropdown);
+    }
+
+    private void setCityAdapter(AutoCompleteTextView textView) {
+        ArrayAdapter<City> adapter = new ArrayAdapter<>
+                (getApplicationContext(), android.R.layout.simple_dropdown_item_1line, cities);
+        textView.setAdapter(adapter);
+
+        // Set tag as the city id to the corresponding textview
+        textView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                City selectedCity= (City) parent.getItemAtPosition(position);
+                textView.setTag(selectedCity.getId());
+            }
+        });
     }
 
     private void setStartDate() {
-        Calendar calendar=Calendar.getInstance();
-        int day=calendar.get(Calendar.DAY_OF_MONTH);
-        int month=calendar.get(Calendar.MONTH);
-        int year=calendar.get(Calendar.YEAR);
+        int day=dateStart.get(Calendar.DAY_OF_MONTH);
+        int month=dateStart.get(Calendar.MONTH);
+        int year=dateStart.get(Calendar.YEAR);
 
         DatePickerDialog start=new DatePickerDialog(
                 this,R.style.DialogTheme,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        dateStart.set(year,month,dayOfMonth);
                         datePicker_start=new DatePicker(getApplicationContext());
                         datePicker_start.init(year,month,dayOfMonth,null);
                         GregorianCalendar gregorianCalendar = new GregorianCalendar(year, month,dayOfMonth-1);
@@ -180,6 +219,11 @@ public class MakePlan extends AppCompatActivity {
                         String week=getWeek(week_number);
                         String date=week+" "+dayOfMonth+"/"+month+"/"+(year%100);
                         start_date.setText(date);
+
+                        // If start date becomes larger than end date (after update) ask user to set it again
+                        if (dateStart.compareTo(dateEnd)>0) {
+                            end_date.setText("");
+                        }
                     }
                 },
                 year,month,day
@@ -195,16 +239,16 @@ public class MakePlan extends AppCompatActivity {
     }
 
     private void setEndDate() {
-        Calendar calendar=Calendar.getInstance();
-        int day=calendar.get(Calendar.DAY_OF_MONTH);
-        int month=calendar.get(Calendar.MONTH);
-        int year=calendar.get(Calendar.YEAR);
+        int day=dateEnd.get(Calendar.DAY_OF_MONTH);
+        int month=dateEnd.get(Calendar.MONTH);
+        int year=dateEnd.get(Calendar.YEAR);
 
         DatePickerDialog end=new DatePickerDialog(
                 this,R.style.DialogTheme,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        dateEnd.set(year,month,dayOfMonth);
                         datePicker_end=new DatePicker(getApplicationContext());
                         datePicker_end.init(year,month,dayOfMonth,null);
                         GregorianCalendar gregorianCalendar = new GregorianCalendar(year, month,dayOfMonth-1);
@@ -217,8 +261,7 @@ public class MakePlan extends AppCompatActivity {
                 year,month,day
         );
         //Disable date before today
-        end.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-
+        end.getDatePicker().setMinDate(dateStart.getTimeInMillis());
         // Set date to previously selected date
         if (datePicker_end != null) {
             end.updateDate(datePicker_end.getYear(),datePicker_end.getMonth(),datePicker_end.getDayOfMonth());
@@ -245,10 +288,9 @@ public class MakePlan extends AppCompatActivity {
         ImageView close=(ImageView) newDestination.findViewById(R.id.close);
 
         // Set autocomplete values to text view using adapter
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>
-                (this, android.R.layout.simple_dropdown_item_1line, cities);
-        textView.setAdapter(arrayAdapter);
+        setCityAdapter(textView);
 
+        // Delete the textview on close button clicked
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -282,21 +324,69 @@ public class MakePlan extends AppCompatActivity {
         return true;
     }
 
-    private void getCitiesSelected() {
+    // If all valid cities are entered it adds those cities to the selected cities arraylist and returns true
+    private boolean getCitiesSelected() {
         citiesSelected.clear();
         String text;
         text=citydropdown.getText().toString();
-        if (text!=null || !text.equals("")) {
-            citiesSelected.add(text);
+        int tag;
+        if (text!=null && text.length()!=0) {
+            // Check if tag is set to the textview
+            if (citydropdown.getTag()==null) {
+                return false;
+            }
+            tag= (int) citydropdown.getTag();
+            // Add the corresponding city to list
+            citiesSelected.add(cities.get(tag-1));
         }
 
         for (int i=0;i<layout.getChildCount();i++) {
             View destination = layout.getChildAt(i);
             AutoCompleteTextView textView = (AutoCompleteTextView) destination.findViewById(R.id.cityLinearLayout);
             text = textView.getText().toString();
-            if (text != null || !text.equals("")) {
-                citiesSelected.add(text);
+            if (text != null && text.length()!=0) {
+                // Check if tag is set to the textview
+                if (textView.getTag()==null) {
+                    return false;
+                }
+                tag= (int) textView.getTag();
+                // Add the corresponding city to list
+                citiesSelected.add(cities.get(tag-1));
             }
         }
+
+        return true;
+    }
+
+    private boolean checkAllDetailsEntered() {
+        String text;
+        text=plan_name.getText().toString();
+        if (text == null || text.equals("")) {
+            return false;
+        }
+
+        text=citydropdown.getText().toString();
+        if (text == null || text.equals("")) {
+            return false;
+        }
+
+        text=start_date.getText().toString();
+        if (text == null || text.equals("")) {
+            return false;
+        }
+
+        text=end_date.getText().toString();
+        if (text == null || text.equals("")) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void passData(Intent intent) {
+        intent.putExtra("com.designyourjourney.pictureout.CITIES_SELECTED",citiesSelected);
+        intent.putExtra("com.designyourjourney.pictureout.PLAN_NAME",plan_name.getText().toString());
+        intent.putExtra("com.designyourjourney.pictureout.START_DATE",start_date.getText().toString());
+        intent.putExtra("com.designyourjourney.pictureout.END_DATE",end_date.getText().toString());
     }
 }
