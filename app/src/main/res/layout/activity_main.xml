@@ -10,19 +10,18 @@
         android:id="@+id/mainPageBackground"
         android:layout_width="447dp"
         android:layout_height="274dp"
+        android:contentDescription="@string/mainPageBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/place"
-        android:contentDescription="@string/mainPageBackground" />
+        app:srcCompat="@drawable/place" />
 
     <Button
         android:id="@+id/planButton"
         android:layout_width="227dp"
         android:layout_height="58dp"
-        android:layout_marginBottom="568dp"
         android:alpha="0.85"
         android:background="@drawable/create_your_own_plan"
         android:text="@string/create_your_own_plan"
@@ -32,6 +31,8 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.151" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

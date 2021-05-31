@@ -30,10 +30,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class MakePlan extends AppCompatActivity {
@@ -50,11 +48,13 @@ public class MakePlan extends AppCompatActivity {
     private ArrayList<City> citiesSelected=new ArrayList<>();
     private Calendar dateStart=Calendar.getInstance();
     private Calendar dateEnd=Calendar.getInstance();
+    private City currentCity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_plan);
+        getData(); //To get data through intent
         plan_name=findViewById(R.id.planName);
 
         Log.d("DATE: ",dateStart+" "+dateEnd);
@@ -115,6 +115,11 @@ public class MakePlan extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void getData() {
+        Intent intent=getIntent();
+        currentCity= (City) intent.getSerializableExtra("com.designyourjourney.pictureout.MainActivity.CURRENTLOCATION");
     }
 
     private void initialise_data() {
@@ -324,7 +329,7 @@ public class MakePlan extends AppCompatActivity {
         return true;
     }
 
-    // If all valid cities are entered it adds those cities to the selected cities arraylist and returns true
+    // If all valid cities are entered it adds those cities to the selected cities array list and returns true
     private boolean getCitiesSelected() {
         citiesSelected.clear();
         String text;
@@ -388,5 +393,6 @@ public class MakePlan extends AppCompatActivity {
         intent.putExtra("com.designyourjourney.pictureout.PLAN_NAME",plan_name.getText().toString());
         intent.putExtra("com.designyourjourney.pictureout.START_DATE",start_date.getText().toString());
         intent.putExtra("com.designyourjourney.pictureout.END_DATE",end_date.getText().toString());
+        intent.putExtra("com.designyourjourney.pictureout.MakePlan.CURRENTLOCATION",currentCity);
     }
 }

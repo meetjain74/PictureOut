@@ -10,4 +10,6 @@
     <string name="add_destination">Add destination</string>
     <string name="remove_destination" />
     <string name="create_plan">Create Plan</string>
+
+    <string name="map_key" translatable="false">AIzaSyASyEc4cyjSxxsVfa7vr2z8JHruU5ZrV9g</string>
 </resources>

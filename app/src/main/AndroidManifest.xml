@@ -4,13 +4,22 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!--  ACCESS_COARSE_LOCATION: It provides location accuracy within a city block -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <!-- ACCESS_FINE_LOCATION: It provides a more accurate location -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PictureOut">
+        android:theme="@style/Theme.PictureOut"
+        android:fullBackupContent="@xml/backup_descriptor">
+        <meta-data android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/map_key"/>
         <activity android:name=".IdealisePlan" />
         <activity android:name=".MakePlan" />
         <activity android:name=".MainActivity">
