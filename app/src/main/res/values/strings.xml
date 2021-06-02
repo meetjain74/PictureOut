@@ -12,4 +12,8 @@
     <string name="create_plan">Create Plan</string>
 
     <string name="map_key" translatable="false">AIzaSyASyEc4cyjSxxsVfa7vr2z8JHruU5ZrV9g</string>
+    <string name="planImage">planImage</string>
+    <string name="destinations">Destinations</string>
+    <string name="date_range">Date Range</string>
+    <string name="deleteImage">deleteImage</string>
 </resources>

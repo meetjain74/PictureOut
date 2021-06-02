@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:id="@+id/planViewLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/planImage"
+            android:layout_width="match_parent"
+            android:layout_height="208dp"
+            android:background="@drawable/image_background"
+            android:contentDescription="@string/planImage"
+            app:srcCompat="@drawable/place_default" />
+
+        <TextView
+            android:id="@+id/cardPlanName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/plan_name"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/cardDestinations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="cursive"
+            android:hint="@string/destinations" />
+
+        <LinearLayout
+            android:id="@+id/dateAndDelete"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/cardDateRange"
+                android:layout_width="293dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/date_range"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:id="@+id/cardDelete"
+                android:layout_width="57dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:contentDescription="@string/deleteImage"
+                app:srcCompat="@drawable/delete"
+                tools:ignore="VectorDrawableCompat" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +26,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.designyourjourney.pictureout.db.AppDatabase;
+import com.designyourjourney.pictureout.db.AppRepository;
+import com.designyourjourney.pictureout.db.Plan;
+import com.designyourjourney.pictureout.db.PlanDao;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -107,6 +112,7 @@ public class MakePlan extends AppCompatActivity {
                     Toast.makeText(MakePlan.this, "Enter a valid city", Toast.LENGTH_SHORT).show();
                 }
                 else if (checkAllDetailsEntered()) {
+                    addPlan();
                     Intent intent=new Intent(getApplicationContext(),IdealisePlan.class);
                     passData(intent);
                     startActivity(intent);
@@ -394,5 +400,16 @@ public class MakePlan extends AppCompatActivity {
         intent.putExtra("com.designyourjourney.pictureout.START_DATE",start_date.getText().toString());
         intent.putExtra("com.designyourjourney.pictureout.END_DATE",end_date.getText().toString());
         intent.putExtra("com.designyourjourney.pictureout.MakePlan.CURRENTLOCATION",currentCity);
+    }
+
+    private void addPlan() {
+        Plan plan = new Plan();
+        plan.setPlanName(plan_name.getText().toString());
+        plan.setStartDate(start_date.getText().toString());
+        plan.setEndDate(end_date.getText().toString());
+        plan.setDestinations(citiesSelected);
+
+        AppRepository appRepository = new AppRepository(getApplicationContext());
+        appRepository.insertPlan(plan);
     }
 }

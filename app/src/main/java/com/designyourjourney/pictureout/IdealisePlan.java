@@ -3,11 +3,9 @@ package com.designyourjourney.pictureout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -57,6 +55,14 @@ public class IdealisePlan extends AppCompatActivity implements OnMapReadyCallbac
             MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5));
+            googleMap.addMarker(markerOptions);
+        }
+
+        // Show selected cities on map
+        for (int i=0;i<citiesSelected.size();i++) {
+            City temp = citiesSelected.get(i);
+            LatLng latLng = new LatLng(temp.getLatitude(),temp.getLongitude());
+            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(temp.getName());
             googleMap.addMarker(markerOptions);
         }
     }
