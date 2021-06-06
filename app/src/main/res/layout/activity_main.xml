@@ -11,11 +11,9 @@
         android:layout_width="447dp"
         android:layout_height="274dp"
         android:contentDescription="@string/mainPageBackground"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/place" />
 
     <Button
@@ -34,5 +32,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.151" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="93dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainPageBackground"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/seeMyPlansTextView"
+            android:layout_width="312dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/work_sans_extrabold"
+            android:gravity="start|center_vertical"
+            android:text="@string/see_my_plans"
+            android:textColor="@color/seeMyPlansColor"
+            android:textSize="30sp">
+
+        </TextView>
+
+        <ImageView
+            android:id="@+id/arrowButton"
+            android:layout_width="57dp"
+            android:layout_height="57dp"
+            android:layout_gravity="end"
+            android:contentDescription="@string/arrow"
+            app:srcCompat="@drawable/arrow"
+            tools:ignore="VectorDrawableCompat" />
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

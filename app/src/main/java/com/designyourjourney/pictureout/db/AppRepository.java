@@ -3,6 +3,8 @@ package com.designyourjourney.pictureout.db;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import java.util.List;
+
 public class AppRepository {
     private AppDatabase db;
 
@@ -14,14 +16,6 @@ public class AppRepository {
     }
 
     public void insertPlan(Plan plan) {
-//        new AsyncTask<Void,Void,Void>(){
-//            @Override
-//            protected Void doInBackground(Void... voids) {
-//                db.planDao().insertPlan(plan);
-//                return null;
-//            }
-//        }.execute();
-
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -30,5 +24,18 @@ public class AppRepository {
         });
     }
 
+    public List<Plan> getMyPlans() {
+        List<Plan> myPlans=db.planDao().getAllPlans();
+        return myPlans;
+    }
+
+    public void deletePlan(Plan plan) {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                db.planDao().deletePlan(plan);
+            }
+        });
+    }
 
 }

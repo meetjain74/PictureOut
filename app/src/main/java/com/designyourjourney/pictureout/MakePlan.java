@@ -116,6 +116,7 @@ public class MakePlan extends AppCompatActivity {
                     Intent intent=new Intent(getApplicationContext(),IdealisePlan.class);
                     passData(intent);
                     startActivity(intent);
+                    finish();
                 } else {
                     Toast.makeText(MakePlan.this, "Enter all fields", Toast.LENGTH_SHORT).show();
                 }

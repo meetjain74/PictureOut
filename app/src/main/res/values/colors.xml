@@ -10,4 +10,8 @@
     <color name="actionBar">#3b99c1</color>
     <color name="statusBar">#53a8c9</color>
     <color name="datePickerDialog_topBar">#f4a236</color>
+    <color name="grey">#696969</color>
+    <color name="arrowColor">#3b99c1</color>
+    <color name="seeMyPlansColor">#f4a236</color>
+    <color name="lavender">#e9eef1</color>
 </resources>

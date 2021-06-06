@@ -44,4 +44,8 @@ ext {
 
     //Gson version
     gsonVersion = '2.8.7'
+
+    //Recycler view version
+    recyclerViewVersion = '1.2.1'
+    recyclerViewSelectionVersion = '1.1.0'
 }

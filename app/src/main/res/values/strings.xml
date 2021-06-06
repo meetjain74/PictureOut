@@ -16,4 +16,8 @@
     <string name="destinations">Destinations</string>
     <string name="date_range">Date Range</string>
     <string name="deleteImage">deleteImage</string>
+    <string name="my_plans">My Plans</string>
+    <string name="see_my_plans">See my plans</string>
+    <string name="arrow">arrow</string>
+    <string name="search_plan">Search</string>
 </resources>
