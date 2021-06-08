@@ -2,8 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.designyourjourney.pictureout">
 
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- ACCESS_COARSE_LOCATION: It provides location accuracy within a city block -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- ACCESS_FINE_LOCATION: It provides a more accurate location -->
+    <!-- Permission for internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- ACCESS_COARSE_LOCATION: It provides location accuracy within a city block -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- ACCESS_FINE_LOCATION: It provides a more accurate location -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -16,7 +21,9 @@
         <activity
             android:name=".UpgradePlan"
             android:label="@string/title_activity_upgrade_plan"
-            android:theme="@style/Theme.PictureOut.NoActionBar"></activity>
+            android:theme="@style/Theme.PictureOut.NoActionBar">
+
+        </activity>
         <activity android:name=".AllPlansView" />
 
         <meta-data
