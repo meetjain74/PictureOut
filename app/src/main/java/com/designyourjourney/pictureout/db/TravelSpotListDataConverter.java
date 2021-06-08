@@ -2,8 +2,6 @@ package com.designyourjourney.pictureout.db;
 
 import androidx.room.TypeConverter;
 
-import com.designyourjourney.pictureout.City;
-import com.designyourjourney.pictureout.TravelSpot;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

@@ -63,7 +63,7 @@
 
                 <TextView
                     android:id="@+id/cardDateRange"
-                    android:layout_width="293dp"
+                    android:layout_width="227dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="@string/date_range"
@@ -71,11 +71,20 @@
 
                 <ImageView
                     android:id="@+id/cardDelete"
-                    android:layout_width="57dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:contentDescription="@string/deleteImage"
                     app:srcCompat="@drawable/delete"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <ImageView
+                    android:id="@+id/cardCopy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/copy"
+                    android:contentDescription="@string/copy_plan"
                     tools:ignore="VectorDrawableCompat" />
             </LinearLayout>
         </LinearLayout>

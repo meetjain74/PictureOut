@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/defaultNoPlanView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        tools:visibility="visible"
+        >
+
+        <ImageView
+            android:id="@+id/defaultImagePanda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/panda"
+            android:contentDescription="@string/default_image_no_plans" />
+
+        <TextView
+            android:id="@+id/defaultNoPlansText"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:fontFamily="@font/corben_bold"
+            android:gravity="center"
+            android:text="@string/no_plans_yet"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+
+</merge>

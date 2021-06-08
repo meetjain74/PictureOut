@@ -4,13 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.designyourjourney.pictureout.db.AppRepository;
+import com.designyourjourney.pictureout.db.City;
 import com.designyourjourney.pictureout.db.Plan;
 
 import java.util.ArrayList;
@@ -23,6 +30,9 @@ public class AllPlansView extends AppCompatActivity {
     private ShowAllPlansCustomAdapter customAdapter;
     private EditText search;
     private ArrayList<Plan> myPlans_search;
+    private LinearLayout layout;
+    private TextView defaultText;
+    private ImageView defaultImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +42,16 @@ public class AllPlansView extends AppCompatActivity {
         allMyPlansRecyclerView = findViewById(R.id.allMyPlans);
         getAllMyPlans();
 
+        defaultText = findViewById(R.id.defaultNoPlansText);
+        defaultImage = findViewById(R.id.defaultImagePanda);
+        defaultText.setVisibility(View.INVISIBLE);
+        defaultImage.setVisibility(View.INVISIBLE);
+
         search = findViewById(R.id.searchPlans);
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                // Nothing
             }
 
             @Override
@@ -47,7 +62,7 @@ public class AllPlansView extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                // Nothing
             }
         });
     }
@@ -82,8 +97,34 @@ public class AllPlansView extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            customAdapter = new ShowAllPlansCustomAdapter(AllPlansView.this,myPlans);
-            allMyPlansRecyclerView.setAdapter(customAdapter);
+            if (myPlans.size()==0) {
+                defaultImage.setVisibility(View.VISIBLE);
+                defaultText.setVisibility(View.VISIBLE);
+                search.setVisibility(View.GONE);
+            }
+            else {
+                customAdapter = new ShowAllPlansCustomAdapter(AllPlansView.this, myPlans);
+
+                // This function called when all plans are deleted - set default image and text to be visible
+                customAdapter.setWhenLastPlanDeletedEvent(new ShowAllPlansCustomAdapter.onLastPlanDeleteListener() {
+                    @Override
+                    public void onLastPlanDeleted() {
+                        defaultImage.setVisibility(View.VISIBLE);
+                        defaultText.setVisibility(View.VISIBLE);
+                        search.setVisibility(View.GONE);
+                    }
+                });
+
+                // Add click event to item in recycler view
+                customAdapter.setOnItemClickListener(new ShowAllPlansCustomAdapter.onRecyclerViewItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        performItemClickAction(position);
+                    }
+                });
+
+                allMyPlansRecyclerView.setAdapter(customAdapter);
+            }
         }
     }
 
@@ -121,5 +162,11 @@ public class AllPlansView extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    private void performItemClickAction(int position) {
+        Intent intent = new Intent(this,UpgradePlan.class);
+        startActivity(intent);
+        finish();
     }
 }

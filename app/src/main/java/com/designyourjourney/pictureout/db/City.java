@@ -1,12 +1,28 @@
-package com.designyourjourney.pictureout;
+package com.designyourjourney.pictureout.db;
+
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
+@Entity(tableName = "cities_table")
 public class City implements Serializable {
+
+    @PrimaryKey
+    @ColumnInfo(name = "cityId")
     private int id;
+
+    @ColumnInfo(name = "name")
     private String name;
+
+    @ColumnInfo(name = "country")
     private String country;
+
+    @ColumnInfo(name = "latitude")
     private double latitude;
+
+    @ColumnInfo(name = "longitude")
     private double longitude;
 
     public City(int id, String name, String country, double latitude, double longitude) {

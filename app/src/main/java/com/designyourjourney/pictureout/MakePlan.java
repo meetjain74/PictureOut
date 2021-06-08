@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,10 +25,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.designyourjourney.pictureout.db.AppDatabase;
 import com.designyourjourney.pictureout.db.AppRepository;
+import com.designyourjourney.pictureout.db.City;
 import com.designyourjourney.pictureout.db.Plan;
-import com.designyourjourney.pictureout.db.PlanDao;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,9 +36,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class MakePlan extends AppCompatActivity {
-    private ArrayList<City> cities;
+    private List<City> cities;
     private EditText plan_name;
     private AutoCompleteTextView citydropdown;
     private TextView start_date;
@@ -59,12 +58,11 @@ public class MakePlan extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_plan);
+        cities = new ArrayList<>();
+
         getData(); //To get data through intent
         plan_name=findViewById(R.id.planName);
 
-        Log.d("DATE: ",dateStart+" "+dateEnd);
-
-        cities = new ArrayList<>();
         initialise_data();
 
         // Get all attributes and add corresponding properties to it
@@ -82,7 +80,7 @@ public class MakePlan extends AppCompatActivity {
             public void onClick(View v) {
                 String text=start_date.getText().toString();
                 if (text==null || text.length()==0) {
-                    Toast.makeText(MakePlan.this, "Enter start date first", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MakePlan.this, R.string.start_date_first, Toast.LENGTH_SHORT).show();
                 } else {
                     setEndDate();
                 }
@@ -97,7 +95,7 @@ public class MakePlan extends AppCompatActivity {
                     addDestination();
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "Already available", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.already_available, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -109,7 +107,7 @@ public class MakePlan extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!getCitiesSelected()) {
-                    Toast.makeText(MakePlan.this, "Enter a valid city", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MakePlan.this, R.string.city_not_valid, Toast.LENGTH_SHORT).show();
                 }
                 else if (checkAllDetailsEntered()) {
                     addPlan();
@@ -118,7 +116,7 @@ public class MakePlan extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(MakePlan.this, "Enter all fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MakePlan.this, R.string.all_fields, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -176,6 +174,8 @@ public class MakePlan extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
+
+                        // Dismiss progress dialog
                         progressDialog.dismiss();
                         setFields();
                     }

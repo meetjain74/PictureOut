@@ -1,4 +1,4 @@
-package com.designyourjourney.pictureout;
+package com.designyourjourney.pictureout.db;
 
 public class TravelSpot {
     private String cityName; // Name of the city in which it is located

@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.designyourjourney.pictureout.db.AppRepository;
+import com.designyourjourney.pictureout.db.City;
 import com.designyourjourney.pictureout.db.Plan;
 
 import java.util.List;
@@ -23,6 +24,12 @@ public class ShowAllPlansCustomAdapter extends
 
     private List<Plan> myPlans;
     Context context;
+
+    // Click listener object created for last plan deletion
+    private onLastPlanDeleteListener listener;
+
+    // Click listener object created for recycler view item click
+    private onRecyclerViewItemClickListener itemListener;
 
     /*
     * Provide a reference to the type of views that you are using
@@ -34,6 +41,7 @@ public class ShowAllPlansCustomAdapter extends
         TextView destinations;
         TextView dateRange;
         ImageView deleteButton;
+        ImageView copyButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -42,12 +50,21 @@ public class ShowAllPlansCustomAdapter extends
             this.destinations=(TextView)itemView.findViewById(R.id.cardDestinations);
             this.dateRange=(TextView)itemView.findViewById(R.id.cardDateRange);
             this.deleteButton=(ImageView) itemView.findViewById(R.id.cardDelete);
+            this.copyButton=(ImageView)itemView.findViewById(R.id.cardCopy);
         }
     }
 
     public ShowAllPlansCustomAdapter (Context context,List<Plan> myPlans) {
         this.context=context;
         this.myPlans=myPlans;
+    }
+
+    public void setWhenLastPlanDeletedEvent(onLastPlanDeleteListener listener) {
+        this.listener=listener;
+    }
+
+    public void setOnItemClickListener(onRecyclerViewItemClickListener itemListener) {
+        this.itemListener=itemListener;
     }
 
     @NonNull
@@ -68,6 +85,7 @@ public class ShowAllPlansCustomAdapter extends
         TextView destinations=holder.destinations;
         TextView dateRange=holder.dateRange;
         ImageView deleteButton=holder.deleteButton;
+        ImageView copyButton=holder.copyButton;
 
         Plan plan = myPlans.get(position);
 
@@ -95,6 +113,22 @@ public class ShowAllPlansCustomAdapter extends
                 generateDeleteDialog(myPlans.get(position));
             }
         });
+
+        // Set on click listener to copy button i.e copy the plan
+        copyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                copyPlan(myPlans.get(position));
+            }
+        });
+
+        // Add click event listener to holder view
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemListener.onItemClick(position);
+            }
+        });
     }
 
     @Override
@@ -102,7 +136,7 @@ public class ShowAllPlansCustomAdapter extends
         return myPlans.size();
     }
 
-    public void generateDeleteDialog(Plan plan) {
+    private void generateDeleteDialog(Plan plan) {
         final Plan planToBeDeleted = plan;
 
         AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(context);
@@ -117,6 +151,9 @@ public class ShowAllPlansCustomAdapter extends
                 repository.deletePlan(planToBeDeleted);
                 Toast.makeText(context, "Plan deleted successfully", Toast.LENGTH_SHORT).show();
                 myPlans.remove(plan);
+                if (myPlans.size()==0 && listener!=null) {
+                    listener.onLastPlanDeleted();
+                }
                 notifyDataSetChanged();
             }
         });
@@ -130,6 +167,22 @@ public class ShowAllPlansCustomAdapter extends
 
         AlertDialog dialog = deleteBuilder.create();
         dialog.show();
+    }
+
+    private void copyPlan(Plan plan) {
+        AppRepository repository = new AppRepository(context);
+        myPlans.add(0,repository.copyPlan(plan));
+        notifyDataSetChanged();
+    }
+
+    // Interface to perform action on all plans deleted event
+    public interface onLastPlanDeleteListener {
+        void onLastPlanDeleted();
+    }
+
+    // Interface to perform action for click on item in recycler view
+    public interface onRecyclerViewItemClickListener {
+        void onItemClick(int position);
     }
 
 }

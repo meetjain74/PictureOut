@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.designyourjourney.pictureout.db.City;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                             Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
             return;
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)) {
-            Toast.makeText(this, "Your location can't be determined", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.location_not_determined, Toast.LENGTH_SHORT).show();
             // Request for permissions
             ActivityCompat.requestPermissions(
                     this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                             Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
             return;
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)) {
-            Toast.makeText(this, "Your location can't be determined", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.location_not_determined, Toast.LENGTH_SHORT).show();
             // Request for permissions
             ActivityCompat.requestPermissions(
                     this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,

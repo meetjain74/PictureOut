@@ -11,6 +11,12 @@
     <string name="remove_destination" />
     <string name="create_plan">Create Plan</string>
 
+    <string name="location_not_determined">Your location can\'t be determined</string>
+    <string name="start_date_first">Enter start date first</string>
+    <string name="already_available">Already available</string>
+    <string name="city_not_valid">Enter a valid city</string>
+    <string name="all_fields">Enter all fields</string>
+
     <string name="map_key" translatable="false">AIzaSyASyEc4cyjSxxsVfa7vr2z8JHruU5ZrV9g</string>
     <string name="planImage">planImage</string>
     <string name="destinations">Destinations</string>
@@ -20,4 +26,13 @@
     <string name="see_my_plans">See my plans</string>
     <string name="arrow">arrow</string>
     <string name="search_plan">Search</string>
+    <string name="copy_plan">Copy plan</string>
+    <string name="default_image_no_plans">Default Image Panda</string>
+    <string name="no_plans_yet">No plans yet</string>
+
+    <string name="tab_text_1">Destinations</string>
+    <string name="tab_text_2">Timeline</string>
+    <string name="tab_text_3">Stay</string>
+
+    <string name="title_activity_upgrade_plan">UpgradePlan</string>
 </resources>

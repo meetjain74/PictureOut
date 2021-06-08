@@ -6,10 +6,12 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Plan.class},version = 1)
+@Database(entities = {Plan.class,City.class},version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract PlanDao planDao();
+
+    public abstract CityDao cityDao();
 
     private static volatile AppDatabase INSTANCE;
 

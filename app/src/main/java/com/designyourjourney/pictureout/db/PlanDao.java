@@ -18,4 +18,9 @@ public interface PlanDao {
 
     @Delete
     void deletePlan(Plan plan);
+
+    // Get last plan which corresponds to it
+    // For concatenation of '%' with value || is used
+    @Query("SELECT name FROM plans_table WHERE name  LIKE (:value || '%') ORDER BY name DESC")
+    List<String> getMatchedPlanNames(String value);
 }
