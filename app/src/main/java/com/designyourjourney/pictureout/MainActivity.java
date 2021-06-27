@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchLocation() {
+
         // Check for permissions
         if (ActivityCompat.checkSelfPermission
                 (this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
