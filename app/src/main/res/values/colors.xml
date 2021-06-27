@@ -14,4 +14,6 @@
     <color name="arrowColor">#3b99c1</color>
     <color name="seeMyPlansColor">#f4a236</color>
     <color name="lavender">#e9eef1</color>
+
+    <color name="tabIndicatorColor">#f4a236</color>
 </resources>
